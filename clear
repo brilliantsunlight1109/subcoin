@@ -1,0 +1,588 @@
+[33mcommit 1948535f73c2f0efb980ef3f618ef1dddfcf6aad[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Mon Aug 5 08:46:27 2024 +0800
+
+    Introduce network transaction manager (#32)
+    
+    * Nits
+    
+    * Initial network transaction manager
+    
+    * Answer the peer's transaction request
+    
+    * Remove timeout transactions
+    
+    * Add rpc `subcoin_sendTransaction`
+    
+    * Add transaction from peer
+    
+    * Add rpc subcoin_getRawTransaction
+    
+    * Add rpc subcoin_decodeRawTransaction
+    
+    * Fix bitcoin transaction broadcasting
+    
+    * Introduce SendTransactionResult
+    
+    * serde camelCase
+    
+    * Nit
+
+[33mcommit 16ec401a751c0fefa2ee699744a7d427d12d9ad8[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Aug 3 21:18:56 2024 +0800
+
+    Fix import_params in run cmd (#31)
+
+[33mcommit 17583277162187984cfdde17e6cdde800536fe5f[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Aug 3 11:18:21 2024 +0800
+
+    Add prometheus params to run cmd and make substrate full sync work (#30)
+    
+    * Add prometheus config to run cmd and start substrate network
+    
+    * Sync seednode list from Bitcoin Core
+    
+    * Update openssl dep
+    
+    * Make Substrate full sync work
+    
+    * Restore the default --blocks-pruning
+    
+    * Fix clippy
+
+[33mcommit e6379c5efc5d1e16f98ad6524f3fcb3e218c4908[m[33m ([m[1;33mtag: [m[1;33mv0.2.0[m[33m)[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 27 11:21:52 2024 +0800
+
+    Introduce --verify-script flag and optimize subcoin-network (#29)
+    
+    * Introduce --verify-script flag
+    
+    * Update usage
+    
+    * Disconnect peer if peer latency is higher than 10s
+    
+    * Periodically evict the slowest peer for potential better new peers
+    
+    * Expose 8333 in Dockerfile and add Syncing the Bitcoin Network docs
+    
+    * Update installation.md
+
+[33mcommit 7b8714cc053f5a524a64d847e8fbed9779dd030e[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Thu Jul 25 16:45:47 2024 +0800
+
+    More consensus rules in block verification (#28)
+    
+    * Revisit max_sig_ops check
+    
+    * Check block height in coinbase
+    
+    * Check witness commitment
+    
+    * Check header version
+    
+    * Add height to Coin
+    
+    * Check PrematureSpendOfCoinbase
+    
+    * Move get_legacy_sig_op_count() into tx_verify module
+    
+    * Check total_sig_ops_cost
+    
+    * Use secrets.GITHUB_TOKEN instead of github.token
+    
+    * Fix clippy
+    
+    * Fix test
+    
+    * Update docs
+    
+    * Docs
+
+[33mcommit f56e0686ac57400605b472634bf4d98bfcfad925[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 23 00:57:28 2024 +0800
+
+    Handle max_inbound_peers and max_outbound_peers properly (#27)
+    
+    * Use API from rust-bitcoin instead of calling bitcoinconsensus directly
+    
+    * Nits
+    
+    * Introduce chain_params module
+    
+    * Check whether utxo is spent in current block
+    
+    * Introduce const MEDIAN_TIME_SPAN in chain_params
+    
+    * Use chain_params.csv_height
+    
+    * Handle max_outbound_peers properly
+    
+    * Handle max_inbound_peers properly
+    
+    * Add script_flag_exceptions
+    
+    * Fix tests
+
+[33mcommit bdf85827d503b8c666175c54bc861287d8383b88[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Mon Jul 22 01:40:12 2024 +0800
+
+    Upgrade polkadot sdk (#25)
+    
+    * Tiny refactoring
+    
+    * Upgrade polkadot-sdk
+    
+    * Make the log consistent with upstream
+    
+    * Nit
+    
+    * Add import_params to Run
+    
+    * Add profiling profile
+    
+    * Nit
+    
+    * Add rocksdb feature into subcoin-node
+    
+    * Avoid cloning the payload using into_payload()
+    
+    * Update Cargo.lock
+    
+    * Nit
+
+[33mcommit 19e6a7f0ae17cbf07751418d49944eeba4205f69[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 20 00:30:54 2024 +0800
+
+    Verify script via bitcoinconsensus (#24)
+    
+    * Minor pure refactor
+    
+    * Replace tx_serialize_size_no_witness() with tx.base_size()
+    
+    This function is already equivalently implemented in rust-bitcoin.
+    
+    * Replace block_serialize_size_no_witness() with block.base_size()
+    
+    * Use block.weight() and tx.weight()
+    
+    * Separate out tx_verify module
+    
+    * Rename header_verifier.rs to header_verify.rs
+    
+    * Inline verify_transaction clsoure
+    
+    * Verify script using bitcoinconsensus
+    
+    * Fix difficulty bits check
+    
+    * Double the stall timeout when the chain is higher than 300000
+
+[33mcommit 409799578f493baa2ff7a9bb9edd0daddd731232[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Thu Jul 18 18:39:59 2024 +0800
+
+    Check more consensus rules in block verification (#23)
+    
+    * Check max_sigops and past_median_time
+    
+    * Add --major-sync-confirmation-depth
+    
+    * Separate out header_verifier module
+    
+    * refactor: extract start() in RunCmd
+    
+    * Rename to calculate_median_time_past()
+    
+    * Check size limits
+    
+    * Check output value
+    
+    * Panic if an error occurred in the block import
+    
+    * Check MTP when CSV is activated
+    
+    * Check if tx is final
+    
+    * Nit
+    
+    * Log too many blocks in the queue every 5 seconds
+    
+    It was printed way too frequent.
+
+[33mcommit b0db68ac37db0c9bd64aedc809879bdfa0864499[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 16 18:35:55 2024 +0800
+
+    Fix utxo fetching in current block (#22)
+    
+    * Move Coin definition into subcoin-runtime-primitives
+    
+    * Update README.md
+    
+    * Fix fetching UTXO from current block
+    
+    * Inline fetch_coin_value_in_current_block()
+    
+    * Nits
+    
+    * Update README.md
+    
+    * Add test
+    
+    * Rename to btc_mainnet_385044.data
+
+[33mcommit 0616efc9a156a1b5ef705101f051199d3490a929[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sun Jul 14 14:45:51 2024 +0800
+
+    Fix rustdoc warnings (#21)
+
+[33mcommit 07c00eb86f5966181df90a9737f1fa3e85fd614b[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 13 20:47:51 2024 +0800
+
+    Remove untagged docker versions (#20)
+    
+    * Remove untagged docker versions
+    
+    * Do not run docker on PR
+
+[33mcommit 075886af6c56117b94e6ccc841bdacec527845a8[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 13 19:38:51 2024 +0800
+
+    Remove sha tag in docker ci (#19)
+
+[33mcommit 1ed8a4caa6cde4a2115ecc7c2acb2739e31ca659[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 13 19:19:11 2024 +0800
+
+    Fix release version in CI (#18)
+
+[33mcommit 8a3c0dde73b557b0195b49eb8d885c44def4d1c7[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 13 13:38:40 2024 +0800
+
+    Add permissions to release ci (#17)
+
+[33mcommit 7a14a522b6ed45a2561bbc118575fce85096014a[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sat Jul 13 12:40:52 2024 +0800
+
+    Create release and executables on pushing tags (#16)
+
+[33mcommit a13dce35adeb8b05fa6fd421c708e3ebac9f20aa[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Fri Jul 12 19:59:04 2024 +0800
+
+    ci: dry run docs on pull request (#15)
+    
+    * ci: dry run docs on pull request
+    
+    * Fix mdbook
+
+[33mcommit bf1e1eb26a2b0558263a7cc988b60cea9f6aabde[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Fri Jul 12 18:56:14 2024 +0800
+
+    Introduce blockchain and tools subcommand (#14)
+    
+    * Improve the error handling in BitcoindBackend
+    
+    * Add tools subcommand
+    
+    * Add blockchain subcommand
+    
+    * Update getting_started.md
+    
+    * Make gettxoutsetinfo interruputible
+    
+    * Split into installation.md and usage.md
+
+[33mcommit 7e5f5b25d169b5890e7d14708cc8782a7c57c455[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Fri Jul 12 00:26:50 2024 +0800
+
+    Add Dockerfile and build images for Linux/amd64 (#12)
+    
+    * Add Dockerfile
+    
+    * Docker cache layer
+    
+    * Remove debug info from release profile
+    
+    * Remove build for docker branch
+    
+    * Add TODO
+
+[33mcommit 6e61e5f237d46c5d14136d3370adf422f132ed01[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Thu Jul 11 12:16:45 2024 +0800
+
+    Derive clap::ValueEnum under cli feature (#11)
+    
+    * Derive clap::ValueEnum under cli feature
+    
+    * Remove duplicate CoinStorageKey
+    
+    * Parse listen_on as PeerId in CLI
+    
+    * Increase the finalization step to 100 when major sync
+    
+    Disk performance on mac M1 is so much faster that the race conditions
+    are still possible with 10 blocks, 100 blocks is fine now.
+    
+    * Update README.md
+
+[33mcommit b569d1532207ec9c69c3221cc3eab7eefa3527c1[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 10 13:11:30 2024 +0800
+
+    Update Docs badge
+
+[33mcommit 6918b7aa47bc312c726c219ca24ee11992d7fd4b[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 10 00:57:36 2024 +0800
+
+    Flexible number of max pending blocks in the queue
+
+[33mcommit 1073e0d30e4a197a5689272f8f802a832806dc93[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 10 00:22:55 2024 +0800
+
+    Pause requesting more blocks if there are too many blocks in the queue
+
+[33mcommit a49057ffdefffb3676241b7ce51d4ebdd28e62fe[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 23:26:06 2024 +0800
+
+    Attempt to finalize every 10 blocks when major sync
+
+[33mcommit dc44c6c5e18936805c37fbbe965d7c1fa62e4e5c[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 23:09:10 2024 +0800
+
+    Remove debug info from production profile
+
+[33mcommit 50d392ad5548447049e9d0a340d951292fc4f38d[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 20:18:11 2024 +0800
+
+    Make --block-count a flag in import-blocks command
+
+[33mcommit 8ca2efd365fa46a121b93534a0a66daad8fa139e[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 16:56:36 2024 +0800
+
+    Run subcoin node!
+
+[33mcommit 93209851527a150fab723b46ba8afd9cb00f62c9[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 13:25:18 2024 +0800
+
+    Introduce subcoin-rpc
+
+[33mcommit f1033c5fbf386ca130018a3e1ad3d5e13d5cd29c[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 13:00:36 2024 +0800
+
+    Introduce subcoin-network
+
+[33mcommit f07ff3fb6c243b9fbdeb4dc4104f35482301781e[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 12:52:05 2024 +0800
+
+    Introduce import_queue in sc-consensus-nakamoto
+    
+    Import queue is used to decouple the block import and block download
+    process.
+
+[33mcommit ab2fd8e82cd394a37a6e42aa929238c41b8f9ed4[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 10 13:09:27 2024 +0800
+
+    Deploy user guide via mdbook (#10)
+    
+    * Add docs
+    
+    * Build mdbook in CI
+    
+    * Add getting_started.md
+    
+    * Test
+    
+    * .
+    
+    * Add User Guide badge
+    
+    * Nicer badge
+    
+    * Update README.md
+
+[33mcommit 880bcf9a05a2ed13b2f483d213a05bf78ede395b[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Tue Jul 9 12:31:12 2024 +0800
+
+    Introduce multiple block executor implementations (#8)
+    
+    * Introduce sc-fast-sync-backend
+    
+    * Introduce subcoin-test-service
+    
+    * Introduce various block executors
+    
+    * Integrate new block executor into node
+    
+    * Assert all executors produce the same state root and fix clippy
+    
+    * Replace substrate-test-runtime with subcoin-runtime in sc-fast-sync-backend
+    
+    This avoids more unnecessary deps.
+
+[33mcommit 43fe40edf91b94c71c9e1ac540a2b121fa04c411[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Mon Jul 8 01:35:29 2024 +0800
+
+    Remove frame dependency (#7)
+    
+    * Remove frame dependency
+    
+    `frame` pulls a number of dependencies we don't need, this commit
+    removes several deps.
+    
+    * Make subcoin-node a library
+    
+    * Add try-runtime feature in pallet-bitcoin
+
+[33mcommit a8f5ccb1e3e7fdf4561ed33234e0ed0ddaaef94e[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Sun Jul 7 16:02:32 2024 +0800
+
+    Integrate storage monitor (#5)
+    
+    * Integrate storage monitor
+    
+    * Fix clippy
+
+[33mcommit 5a8c608bf63b3c1b5151c64754673e912f3aebc2[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Fri Jul 5 16:38:55 2024 +0800
+
+    Finalize blocks on confirmation depth (#4)
+    
+    * Set flag --execute-block as true by default
+    
+    * Ignore *.log
+    
+    * Finalize blocks with enough confirmations
+    
+    It's observed that the memory usage could be extremely high without the
+    finalization, when the chain grows to 220000+. Concretely, the culprit
+    of the high memory usage is creating `NonCanonicalOverlay`.
+    
+    There are also a few other improvements to import-blocks command.
+
+[33mcommit cf5438ebae32b319f6f732138b73ccfa511d7088[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Thu Jul 4 01:54:24 2024 +0800
+
+    Fix rustdoc CI (#3)
+    
+    * Use nightly in rustdoc CI
+    
+    * Install wasm32 target
+    
+    * Add rust-src component
+    
+    * Add permissions write
+
+[33mcommit efb4c6e003319cf9c7f4cf04961d7f53a1f25272[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Thu Jul 4 00:53:30 2024 +0800
+
+    Deploy rustdoc on GA (#2)
+    
+    * Deploy rustdoc on GA
+    
+    * Update README.md
+
+[33mcommit f869503dd7aa697a2fb134fb965e02ab4ebbd49a[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 23:52:06 2024 +0800
+
+    Update README.md
+
+[33mcommit 2514cbbfffc7ee96833cecf6979b421fc01e4080[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 23:33:11 2024 +0800
+
+    Commit Cargo.lock
+
+[33mcommit a2865d40bb1f348993acabfd5ef45286bbc7047c[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 19:41:42 2024 +0800
+
+    Add CI
+
+[33mcommit 327db91cfaf392001cea9f808f31267ef068c6da[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 23:20:28 2024 +0800
+
+    Introduce subcoin-node
+
+[33mcommit bf88ca9bb461280a831d86872d0641e9550a7f15[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 20:57:42 2024 +0800
+
+    Introduce subcoin-service
+
+[33mcommit 14d4b80b084ac47da55c2cb1a126bcc57a0789b8[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 20:53:42 2024 +0800
+
+    Introduce subcoin-informant
+
+[33mcommit 24a546b9f0fadc810212088b6f0e1dfb4b532a1d[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 20:36:19 2024 +0800
+
+    Introduce sc-consensus-nakamoto
+    
+    This commit adds the feature of importing a bitcoin block to the client.
+
+[33mcommit 37779d386814a62787057843d251ad890047aba0[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 20:25:14 2024 +0800
+
+    Introduce subcoin-primitives
+
+[33mcommit 16c33c3177be10ca0952474aadc82d6a9fe6143d[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 19:40:55 2024 +0800
+
+    Introduce subcoin-runtime
+
+[33mcommit d9bf92a25c450354a4a85f7994b9ef1220781fd1[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 19:38:45 2024 +0800
+
+    Introduce pallet-executive fork
+
+[33mcommit c3c5ee8eeec0d3c975f38f2f0b317991321b9f20[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 19:32:30 2024 +0800
+
+    Introduce subcoin-runtime-primitives and pallet-bitcoin
+
+[33mcommit f4d03ccfeec04cad3c32bb8ea78b1144cd45e8a5[m
+Author: Liu-Cheng Xu <xuliuchengxlc@gmail.com>
+Date:   Wed Jul 3 19:12:22 2024 +0800
+
+    Initial commit
